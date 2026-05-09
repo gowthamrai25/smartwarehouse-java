@@ -12,11 +12,9 @@ const CATEGORIES = {
   OTHER:       { rack: 'Rack J', code: 'OT' }
 };
 
-const EMPLOYEES = [
-  { id: 'EMP001', email: 'arjun.sharma@smartwarehouse.com',   name: 'Arjun Sharma',   role: 'ADMIN',            pass: 'Admin@2024' },
-  { id: 'EMP002', email: 'priya.patel@smartwarehouse.com',    name: 'Priya Patel',    role: 'WAREHOUSE_STAFF',  pass: 'Staff@2024' },
-  { id: 'EMP003', email: 'vikram.singh@smartwarehouse.com',   name: 'Vikram Singh',   role: 'DELIVERY_MANAGER', pass: 'Deliver@2024' }
-];
+// No hardcoded accounts — all users register via Sign Up
+// First registered user is automatically ADMIN
+const EMPLOYEES = []; // kept for compatibility; all accounts in localStorage
 
 let idCounter = 1000;
 class Product {
@@ -41,20 +39,29 @@ let dispatchQueue = [];
 let currentUser = null;
 let trackCounter = 2000;
 
-function seedInventory() {
-  const items = [
-    ['Samsung Galaxy S23', 'ELECTRONICS', 74999, 25],
-    ['Apple AirPods Pro',  'ELECTRONICS', 24999, 3],
-    ["Levi's Jeans 511",   'CLOTHING',    3499,  40],
-    ['Basmati Rice 5kg',   'GROCERY',     450,   100],
-    ['Yoga Mat Premium',   'SPORTS',      1299,  15],
-    ['Head First Java',    'BOOKS',       899,   4],
-    ['LEGO Technic Set',   'TOYS',        5999,  8],
-    ['Office Chair Ergo',  'FURNITURE',   12999, 2],
-    ['Whey Protein 1kg',   'SPORTS',      2499,  18],
-    ['Vitamin C 500mg',    'MEDICINE',    299,   60]
-  ];
-  items.forEach(([n,c,p,q]) => inventory.push(new Product(n,c,p,q)));
+// ── FIRST-RUN CHECK ───────────────────────────────────────────
+function isFirstRun() {
+  return getStoredUsers().length === 0;
+}
+
+function checkFirstRun() {
+  if (isFirstRun()) {
+    // Force Sign Up tab and lock to admin setup
+    switchTab('signup');
+    // Hide the Sign In tab until an admin exists
+    document.getElementById('tab-signin').style.display = 'none';
+    // Lock role to ADMIN for first user
+    document.getElementById('su-role').value = 'ADMIN';
+    document.getElementById('su-role').disabled = true;
+    // Show first-run banner
+    const banner = document.getElementById('first-run-banner');
+    if (banner) banner.style.display = 'block';
+  } else {
+    document.getElementById('tab-signin').style.display = '';
+    document.getElementById('su-role').disabled = false;
+    const banner = document.getElementById('first-run-banner');
+    if (banner) banner.style.display = 'none';
+  }
 }
 
 // ── AUTH HELPERS ─────────────────────────────────────────────
@@ -127,7 +134,7 @@ function login() {
   document.getElementById('app').style.display = 'flex';
   document.getElementById('user-name').textContent = emp.name;
   document.getElementById('user-role').textContent = emp.role.replace(/_/g, ' ');
-  seedInventory();
+  // Inventory starts empty — admin adds products manually
   navigate('dashboard');
   updateStats();
 }
@@ -136,10 +143,13 @@ function login() {
 function signUp() {
   const name  = document.getElementById('su-name').value.trim();
   const email = document.getElementById('su-email').value.trim().toLowerCase();
-  const role  = document.getElementById('su-role').value;
   const pass  = document.getElementById('su-pass').value;
   const pass2 = document.getElementById('su-pass2').value;
   const msg   = document.getElementById('signup-msg');
+
+  // First user is always ADMIN; subsequent users choose their role
+  const firstRun = isFirstRun();
+  const role = firstRun ? 'ADMIN' : document.getElementById('su-role').value;
 
   if (!name || !email || !pass || !pass2) {
     msg.className = 'auth-msg error'; msg.textContent = '✘ All fields are required.'; return;
@@ -154,7 +164,7 @@ function signUp() {
     msg.className = 'auth-msg error'; msg.textContent = '✘ Passwords do not match.'; return;
   }
   // Check duplicate
-  const all = [...EMPLOYEES.map(e=>e.email), ...getStoredUsers().map(u=>u.email)];
+  const all = getStoredUsers().map(u => u.email);
   if (all.includes(email)) {
     msg.className = 'auth-msg error'; msg.textContent = '✘ This email is already registered.'; return;
   }
@@ -164,11 +174,15 @@ function signUp() {
   users.push(newUser);
   saveStoredUsers(users);
 
+  const roleLabel = role.replace(/_/g, ' ');
   msg.className = 'auth-msg success';
-  msg.textContent = `✔ Account created for ${name}! You can now sign in.`;
-  // Clear fields and redirect to signin after 2s
+  msg.textContent = firstRun
+    ? `✔ Admin account created for ${name}! Please sign in to start adding products.`
+    : `✔ Account created for ${name} (${roleLabel})! You can now sign in.`;
+
   ['su-name','su-email','su-pass','su-pass2'].forEach(id => document.getElementById(id).value = '');
   setTimeout(() => {
+    checkFirstRun(); // re-evaluate — will now show Sign In tab
     switchTab('signin');
     document.getElementById('empEmail').value = email;
     document.getElementById('empPass').focus();
@@ -183,18 +197,11 @@ function forgotStep1() {
   const msg   = document.getElementById('fp-msg1');
   if (!email) { msg.className = 'auth-msg error'; msg.textContent = '✘ Please enter your email.'; return; }
 
-  const builtin = EMPLOYEES.find(e => e.email === email);
-  const stored  = getStoredUsers().find(u => u.email === email);
-
-  if (!builtin && !stored) {
+  const stored = getStoredUsers().find(u => u.email === email);
+  if (!stored) {
     msg.className = 'auth-msg error'; msg.textContent = '✘ No account found with this email address.'; return;
   }
-  if (builtin) {
-    msg.className = 'auth-msg info';
-    msg.textContent = 'ℹ This is a system account. Contact your administrator to reset the password.';
-    return;
-  }
-  // localStorage user — allow reset
+  // Allow reset
   _fpEmail = email;
   document.getElementById('forgot-step1').style.display = 'none';
   document.getElementById('forgot-step2').style.display = 'block';
@@ -511,6 +518,8 @@ function showOutput(id, msg, type) {
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('empPass').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
   document.getElementById('empEmail').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('empPass').focus(); });
+  // Check if this is first run (no accounts exist)
+  checkFirstRun();
   // populate category dropdowns
   const cats = Object.keys(CATEGORIES);
   ['new-cat','search-cat'].forEach(id => {

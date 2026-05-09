@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SmartWarehouse™ — Project Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;color:#1a1a2e;background:#fff;font-size:13px;line-height:1.6;}
+  @media print{
+    body{font-size:11px;}
+    .no-print{display:none!important;}
+    section{page-break-inside:avoid;}
+    h2{page-break-before:auto;}
+  }
+
+  /* Print button */
+  .print-btn{position:fixed;top:20px;right:20px;background:#00d4aa;color:#000;border:none;padding:12px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 4px 20px rgba(0,212,170,.4);z-index:999;}
+  .print-btn:hover{background:#00b894;}
+
+  /* Cover */
+  .cover{background:linear-gradient(135deg,#080c14 0%,#0f172a 50%,#1a1a2e 100%);color:#fff;padding:60px 50px;text-align:center;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .cover .icon{font-size:60px;margin-bottom:16px;}
+  .cover h1{font-size:32px;font-weight:900;color:#00d4aa;margin-bottom:8px;letter-spacing:-.5px;}
+  .cover .sub{font-size:15px;color:#94a3b8;margin-bottom:24px;}
+  .cover .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .badge{background:rgba(0,212,170,.15);border:1px solid rgba(0,212,170,.3);color:#00d4aa;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;}
+  .cover-meta{margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:600px;}
+  .cover-meta div{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;}
+  .cover-meta strong{display:block;color:#00d4aa;font-size:14px;font-weight:700;}
+  .cover-meta span{color:#94a3b8;font-size:11px;}
+
+  /* Content */
+  .content{max-width:900px;margin:0 auto;padding:40px 50px;}
+  h2{font-size:18px;font-weight:800;color:#080c14;border-left:4px solid #00d4aa;padding-left:12px;margin:36px 0 16px;}
+  h3{font-size:14px;font-weight:700;color:#0f172a;margin:20px 0 8px;}
+  p{color:#374151;margin-bottom:10px;}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;margin:12px 0 20px;font-size:12px;}
+  th{background:#080c14;color:#00d4aa;padding:10px 12px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+  td{padding:9px 12px;border-bottom:1px solid #e5e7eb;color:#374151;vertical-align:top;}
+  tr:nth-child(even) td{background:#f8fafc;}
+
+  /* Code */
+  code{background:#f1f5f9;color:#0f172a;padding:2px 7px;border-radius:4px;font-family:monospace;font-size:12px;font-weight:600;}
+  pre{background:#080c14;color:#00d4aa;padding:16px;border-radius:8px;font-family:monospace;font-size:12px;margin:12px 0;overflow-x:auto;line-height:1.8;}
+
+  /* Cards grid */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0;}
+  .card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#f8fafc;}
+  .card strong{display:block;color:#00d4aa;font-size:12px;font-weight:700;margin-bottom:4px;}
+  .card span{color:#6b7280;font-size:11px;}
+
+  /* Alert boxes */
+  .alert{border-left:4px solid;padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:12px;}
+  .alert.info{border-color:#00d4aa;background:#f0fdf9;color:#065f46;}
+  .alert.warn{border-color:#f59e0b;background:#fffbeb;color:#92400e;}
+
+  /* Credentials box */
+  .creds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0;}
+  .cred-card{border:1px solid #e5e7eb;border-radius:8px;padding:14px;text-align:center;}
+  .cred-role{font-weight:700;font-size:13px;color:#080c14;margin-bottom:6px;}
+  .cred-email{font-size:10px;color:#6b7280;font-family:monospace;margin-bottom:4px;}
+  .cred-pass{font-size:12px;font-weight:700;color:#00d4aa;font-family:monospace;}
+
+  /* Footer */
+  footer{background:#080c14;color:#64748b;text-align:center;padding:20px;font-size:11px;margin-top:40px;}
+  footer strong{color:#00d4aa;}
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨 Save as PDF</button>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="icon">🏭</div>
+  <h1>SmartWarehouse™</h1>
+  <div class="sub">E-Commerce Warehouse &amp; Storage Management System</div>
+  <div class="badges">
+    <span class="badge">Java Academic Project</span>
+    <span class="badge">6 Packages</span>
+    <span class="badge">15 Java Files</span>
+    <span class="badge">Web Dashboard</span>
+    <span class="badge">Netlify Deployed</span>
+  </div>
+  <div class="cover-meta">
+    <div><strong>Language</strong><span>Core Java (JDK 8+)</span></div>
+    <div><strong>Live URL</strong><span>smartwarehouse-java.netlify.app</span></div>
+    <div><strong>GitHub</strong><span>gowthamrai25/smartwarehouse-java</span></div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 1. OVERVIEW -->
+  <h2>1. Project Overview</h2>
+  <p>This system simulates the backend warehouse infrastructure of a large e-commerce company like Amazon or Flipkart. It manages the complete lifecycle of products — from incoming shipments to dispatch — across a multi-rack warehouse with 10 storage sections.</p>
+  <p>The project is implemented in two forms: a <strong>Java console application</strong> and a <strong>browser-based web dashboard</strong> deployed live on Netlify.</p>
+
+  <div class="alert info">🌐 <strong>Live URL:</strong> https://smartwarehouse-java.netlify.app &nbsp;|&nbsp; <strong>GitHub:</strong> https://github.com/gowthamrai25/smartwarehouse-java</div>
+
+  <!-- 2. FILE STRUCTURE -->
+  <h2>2. Project File Structure</h2>
+  <pre>project/
+├── README.md
+├── run.bat                          ← Compile &amp; run (double-click)
+├── ecommerce/
+│   ├── exceptions/
+│   │   ├── LowStockException.java
+│   │   ├── InsufficientStockException.java
+│   │   └── ProductNotFoundException.java
+│   ├── interfaces/
+│   │   ├── Trackable.java
+│   │   └── Manageable.java
+│   ├── products/
+│   │   ├── Category.java
+│   │   ├── Product.java
+│   │   └── ProductManager.java
+│   ├── warehouse/
+│   │   ├── Rack.java
+│   │   └── StorageManager.java
+│   ├── shipment/
+│   │   ├── Shipment.java
+│   │   └── ShipmentManager.java
+│   └── main/
+│       ├── EmployeeRole.java
+│       ├── Employee.java
+│       └── Main.java
+└── web/
+    ├── index.html
+    ├── style.css
+    └── app.js</pre>
+
+  <!-- 3. FILE DESCRIPTIONS -->
+  <h2>3. File Descriptions</h2>
+
+  <h3>exceptions Package</h3>
+  <table>
+    <tr><th>File</th><th>Type</th><th>Purpose</th></tr>
+    <tr><td><code>LowStockException.java</code></td><td>Custom Exception</td><td>Thrown when product quantity falls below 5 units. Extends Exception.</td></tr>
+    <tr><td><code>InsufficientStockException.java</code></td><td>Custom Exception</td><td>Thrown when dispatch quantity exceeds available stock.</td></tr>
+    <tr><td><code>ProductNotFoundException.java</code></td><td>Custom Exception</td><td>Thrown when product lookup by ID fails in inventory.</td></tr>
+  </table>
+
+  <h3>interfaces Package</h3>
+  <table>
+    <tr><th>File</th><th>Methods Defined</th><th>Implemented By</th></tr>
+    <tr><td><code>Trackable.java</code></td><td>trackShipment(), getTrackingId(), isDelivered(), updateStatus()</td><td>Shipment.java</td></tr>
+    <tr><td><code>Manageable.java</code></td><td>displayAll(), getTotalCount(), generateReport()</td><td>ProductManager, StorageManager</td></tr>
+  </table>
+
+  <h3>products Package</h3>
+  <table>
+    <tr><th>File</th><th>Key Feature</th><th>Data Structure</th></tr>
+    <tr><td><code>Category.java</code></td><td>Enum with rack &amp; code mappings (ELECTRONICS→Rack A)</td><td>Enum</td></tr>
+    <tr><td><code>Product.java</code></td><td>Auto ID generation, isLowStock(), getTotalValue()</td><td>Static counter</td></tr>
+    <tr><td><code>ProductManager.java</code></td><td>Inventory CRUD, search (.contains()/.startsWith()), billing engine</td><td>ArrayList&lt;Product&gt;</td></tr>
+  </table>
+
+  <h3>warehouse Package</h3>
+  <table>
+    <tr><th>File</th><th>Key Feature</th><th>Data Structure</th></tr>
+    <tr><td><code>Rack.java</code></td><td>10 fixed shelf slots, allocateShelf(), freeShelf()</td><td>String[] (Array)</td></tr>
+    <tr><td><code>StorageManager.java</code></td><td>Smart auto-allocation by category, warehouse report</td><td>ArrayList&lt;Rack&gt;</td></tr>
+  </table>
+
+  <h3>shipment Package</h3>
+  <table>
+    <tr><th>File</th><th>Key Feature</th><th>Data Structure</th></tr>
+    <tr><td><code>Shipment.java</code></td><td>Implements Trackable interface, inner enums ShipmentType &amp; ShipmentStatus</td><td>—</td></tr>
+    <tr><td><code>ShipmentManager.java</code></td><td>receiveShipment(), queueDispatch(), processNextDispatch(), trackShipmentById()</td><td>Vector&lt;Shipment&gt; + Queue&lt;Shipment&gt;</td></tr>
+  </table>
+
+  <h3>main Package</h3>
+  <table>
+    <tr><th>File</th><th>Purpose</th></tr>
+    <tr><td><code>EmployeeRole.java</code></td><td>Enum: ADMIN, WAREHOUSE_STAFF, DELIVERY_MANAGER with permissions string</td></tr>
+    <tr><td><code>Employee.java</code></td><td>authenticate(), canAccess(module) — role-based access control</td></tr>
+    <tr><td><code>Main.java</code></td><td>Entry point — full interactive 10-option console menu with login system</td></tr>
+  </table>
+
+  <!-- 4. JAVA CONCEPTS -->
+  <h2>4. Java Concepts Used</h2>
+  <table>
+    <tr><th>#</th><th>Concept</th><th>File / Class</th><th>How Used</th></tr>
+    <tr><td>1</td><td>Classes &amp; Objects</td><td>All 15 files</td><td>Every module is a class; objects created for products, employees, shipments</td></tr>
+    <tr><td>2</td><td>Array (fixed-size)</td><td>Rack.java</td><td>String[] shelves — 10 fixed shelf slots per rack</td></tr>
+    <tr><td>3</td><td>ArrayList</td><td>ProductManager.java</td><td>ArrayList&lt;Product&gt; inventory — dynamic product list</td></tr>
+    <tr><td>4</td><td>Vector</td><td>ShipmentManager.java</td><td>Vector&lt;Shipment&gt; shipmentLog — thread-safe history</td></tr>
+    <tr><td>5</td><td>Queue (LinkedList)</td><td>ShipmentManager.java</td><td>Queue&lt;Shipment&gt; dispatchQueue — FIFO order processing</td></tr>
+    <tr><td>6</td><td>Generics</td><td>All collections</td><td>Type parameters: &lt;Product&gt;, &lt;Rack&gt;, &lt;Shipment&gt;</td></tr>
+    <tr><td>7</td><td>Custom Exceptions</td><td>exceptions/</td><td>LowStockException, InsufficientStockException, ProductNotFoundException</td></tr>
+    <tr><td>8</td><td>Exception Handling</td><td>Main.java, Managers</td><td>try-catch blocks, multi-catch in Main.java</td></tr>
+    <tr><td>9</td><td>Interfaces</td><td>Trackable, Manageable</td><td>Contracts enforced on Shipment, ProductManager, StorageManager</td></tr>
+    <tr><td>10</td><td>Enum</td><td>Category, EmployeeRole, etc.</td><td>4 enums: Category, EmployeeRole, ShipmentType, ShipmentStatus</td></tr>
+    <tr><td>11</td><td>Packages</td><td>6 packages</td><td>exceptions, interfaces, products, warehouse, shipment, main</td></tr>
+    <tr><td>12</td><td>String Methods</td><td>ProductManager</td><td>.contains() and .startsWith() for keyword product search</td></tr>
+    <tr><td>13</td><td>Static Fields</td><td>Product.java</td><td>static int idCounter for auto-increment product IDs</td></tr>
+    <tr><td>14</td><td>Inheritance</td><td>All 3 exceptions</td><td>All extend Exception class</td></tr>
+    <tr><td>15</td><td>Polymorphism</td><td>Manageable interface</td><td>ProductManager and StorageManager called via Manageable reference</td></tr>
+    <tr><td>16</td><td>Access Modifiers</td><td>All files</td><td>private fields, public methods throughout</td></tr>
+    <tr><td>17</td><td>Constructors</td><td>Product.java</td><td>Overloaded constructors for product creation</td></tr>
+  </table>
+
+  <!-- 5. HOW TO RUN -->
+  <h2>5. How to Run the Console Application</h2>
+
+  <h3>Option 1 — Double-click (Easiest)</h3>
+  <pre>Navigate to: C:\Users\gr867\Documents\my doc\JAVA\project\
+Double-click: run.bat</pre>
+
+  <h3>Option 2 — Command Prompt</h3>
+  <pre>cd "C:\Users\gr867\Documents\my doc\JAVA\project"
+javac -d out ecommerce\exceptions\*.java ecommerce\interfaces\*.java ^
+      ecommerce\products\*.java ecommerce\warehouse\*.java ^
+      ecommerce\shipment\*.java ecommerce\main\*.java
+java -cp out ecommerce.main.Main</pre>
+
+  <div class="alert warn">⚠ Use <strong>cmd.exe</strong> (Command Prompt), not PowerShell, for correct display.</div>
+
+  <h3>Console Login Credentials</h3>
+  <table>
+    <tr><th>Employee ID</th><th>Password</th><th>Role</th></tr>
+    <tr><td><code>EMP001</code></td><td><code>Admin@2024</code></td><td>Admin — Full Access</td></tr>
+    <tr><td><code>EMP002</code></td><td><code>Staff@2024</code></td><td>Warehouse Staff</td></tr>
+    <tr><td><code>EMP003</code></td><td><code>Deliver@2024</code></td><td>Delivery Manager</td></tr>
+  </table>
+
+  <!-- 6. WEB DASHBOARD -->
+  <h2>6. Web Dashboard</h2>
+
+  <table>
+    <tr><th>Item</th><th>Details</th></tr>
+    <tr><td>Live URL</td><td>https://smartwarehouse-java.netlify.app</td></tr>
+    <tr><td>Hosting</td><td>Netlify — Free, permanent, global CDN</td></tr>
+    <tr><td>GitHub</td><td>https://github.com/gowthamrai25/smartwarehouse-java</td></tr>
+    <tr><td>Works On</td><td>Any device with a browser — PC, phone, tablet</td></tr>
+  </table>
+
+  <h3>Web Login Credentials</h3>
+  <div class="creds">
+    <div class="cred-card">
+      <div class="cred-role">Admin</div>
+      <div class="cred-email">arjun.sharma@smartwarehouse.com</div>
+      <div class="cred-pass">Admin@2024</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-role">Warehouse Staff</div>
+      <div class="cred-email">priya.patel@smartwarehouse.com</div>
+      <div class="cred-pass">Staff@2024</div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-role">Delivery Manager</div>
+      <div class="cred-email">vikram.singh@smartwarehouse.com</div>
+      <div class="cred-pass">Deliver@2024</div>
+    </div>
+  </div>
+
+  <h3>Dashboard Pages</h3>
+  <table>
+    <tr><th>Page</th><th>Function</th></tr>
+    <tr><td>Dashboard</td><td>Live stats — products, units, value, low stock count. Java Concepts grid.</td></tr>
+    <tr><td>Inventory</td><td>Full product table with search by name &amp; category</td></tr>
+    <tr><td>Add Product</td><td>Form with auto rack assignment (Enum-based)</td></tr>
+    <tr><td>Remove Product</td><td>Remove by ID — throws ProductNotFoundException</td></tr>
+    <tr><td>Warehouse Storage</td><td>Visual rack utilization bars for all 10 sections</td></tr>
+    <tr><td>Low Stock Alerts</td><td>Alert cards for products with qty &lt; 5</td></tr>
+    <tr><td>Receive Stock</td><td>Log incoming shipments (adds to Vector log)</td></tr>
+    <tr><td>Dispatch</td><td>Queue outgoing shipments — FIFO Queue processing</td></tr>
+    <tr><td>Track Shipment</td><td>Find any shipment by Tracking ID</td></tr>
+    <tr><td>Shipment Log</td><td>Full history from Vector log</td></tr>
+    <tr><td>Billing Estimate</td><td>Base + 18% GST + storage + shipping calculator</td></tr>
+  </table>
+
+  <!-- 7. DEPLOYMENT -->
+  <h2>7. Deployment Process</h2>
+  <table>
+    <tr><th>Step</th><th>Command</th></tr>
+    <tr><td>1. Install Netlify CLI</td><td><code>npm install -g netlify-cli</code></td></tr>
+    <tr><td>2. Login</td><td><code>netlify login</code></td></tr>
+    <tr><td>3. Create site</td><td><code>netlify sites:create --name smartwarehouse-java</code></td></tr>
+    <tr><td>4. Deploy</td><td><code>netlify deploy --dir ./web --no-build --prod</code></td></tr>
+    <tr><td>5. GitHub push</td><td><code>git push -u origin main</code></td></tr>
+  </table>
+
+  <!-- 8. SAMPLE DATA -->
+  <h2>8. Pre-loaded Sample Inventory</h2>
+  <table>
+    <tr><th>Product</th><th>Category</th><th>Price (₹)</th><th>Stock</th><th>Rack</th></tr>
+    <tr><td>Samsung Galaxy S23</td><td>ELECTRONICS</td><td>74,999</td><td>25</td><td>Rack A</td></tr>
+    <tr><td>Apple AirPods Pro</td><td>ELECTRONICS</td><td>24,999</td><td>3 ⚠</td><td>Rack A</td></tr>
+    <tr><td>Levi's Jeans 511</td><td>CLOTHING</td><td>3,499</td><td>40</td><td>Rack C</td></tr>
+    <tr><td>Basmati Rice 5kg</td><td>GROCERY</td><td>450</td><td>100</td><td>Rack B</td></tr>
+    <tr><td>Yoga Mat Premium</td><td>SPORTS</td><td>1,299</td><td>15</td><td>Rack E</td></tr>
+    <tr><td>Head First Java</td><td>BOOKS</td><td>899</td><td>4 ⚠</td><td>Rack F</td></tr>
+    <tr><td>LEGO Technic Set</td><td>TOYS</td><td>5,999</td><td>8</td><td>Rack G</td></tr>
+    <tr><td>Office Chair Ergo</td><td>FURNITURE</td><td>12,999</td><td>2 ⚠</td><td>Rack D</td></tr>
+    <tr><td>Whey Protein 1kg</td><td>SPORTS</td><td>2,499</td><td>18</td><td>Rack E</td></tr>
+    <tr><td>Vitamin C 500mg</td><td>MEDICINE</td><td>299</td><td>60</td><td>Rack I</td></tr>
+  </table>
+  <p style="font-size:11px;color:#6b7280">⚠ = Low stock (qty &lt; 5) — triggers LowStockException</p>
+
+  <!-- 9. VIVA Q&A -->
+  <h2>9. Viva Preparation — Q &amp; A</h2>
+
+  <h3>Q: Why ArrayList for inventory instead of Array?</h3>
+  <p>Inventory size changes dynamically as products are added/removed. ArrayList handles resizing automatically. Arrays have fixed size and require manual management.</p>
+
+  <h3>Q: Why Vector for shipment log instead of ArrayList?</h3>
+  <p>Vector is synchronized (thread-safe). Multiple employees may access the shipment log simultaneously. Vector prevents data corruption in concurrent access scenarios.</p>
+
+  <h3>Q: Why Queue for dispatch?</h3>
+  <p>Shipments must be processed in the order they were requested — first queued, first dispatched. Queue (FIFO) models this real-world behavior perfectly using LinkedList implementation.</p>
+
+  <h3>Q: Why custom exceptions?</h3>
+  <p>Generic exceptions don't convey domain meaning. LowStockException immediately tells any developer exactly what went wrong — essential in professional, maintainable software.</p>
+
+  <h3>Q: Why packages?</h3>
+  <p>Packages organize large applications into logical modules. ecommerce.products contains product logic; ecommerce.shipment contains shipment logic. This is standard in industry (Maven, Spring Boot).</p>
+
+  <h3>Q: Explain Smart Rack Allocation.</h3>
+  <p>The Category enum stores the rack assignment (e.g., ELECTRONICS → Rack A). When a product is created, StorageManager.allocateStorage() calls getRackForCategory(product.getCategory()) to find the correct Rack object automatically — no manual input needed.</p>
+
+  <h3>Q: How does the billing calculator work?</h3>
+  <table>
+    <tr><td>Base Price</td><td>Unit price × quantity</td></tr>
+    <tr><td>GST (18%)</td><td>Base price × 0.18</td></tr>
+    <tr><td>Storage Fee</td><td>Quantity × ₹2.50 per unit</td></tr>
+    <tr><td>Shipping</td><td>FREE if base &gt; ₹5,000 | else ₹99</td></tr>
+    <tr><td><strong>Total</strong></td><td><strong>Base + GST + Storage + Shipping</strong></td></tr>
+  </table>
+
+  <!-- 10. TECH SUMMARY -->
+  <h2>10. Technology Summary</h2>
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+    <tr><td>Core Logic</td><td>Java 8+</td><td>All business logic — 15 Java files, 6 packages</td></tr>
+    <tr><td>Compilation</td><td>javac</td><td>Compiles to bytecode in out/ folder</td></tr>
+    <tr><td>Runtime</td><td>JVM (java)</td><td>Executes compiled classes</td></tr>
+    <tr><td>Console UI</td><td>Scanner, System.out</td><td>Interactive 10-option menu</td></tr>
+    <tr><td>Web Frontend</td><td>HTML5, CSS3, Vanilla JS</td><td>Browser-based dashboard</td></tr>
+    <tr><td>Web Fonts</td><td>Google Fonts (Inter)</td><td>Professional typography</td></tr>
+    <tr><td>Hosting</td><td>Netlify (Free)</td><td>Global CDN — permanent deployment</td></tr>
+    <tr><td>Version Control</td><td>GitHub</td><td>gowthamrai25/smartwarehouse-java</td></tr>
+    <tr><td>Auth System</td><td>localStorage + JS</td><td>Sign In / Sign Up / Forgot Password</td></tr>
+  </table>
+
+</div>
+
+<footer>
+  <strong>SmartWarehouse™</strong> — E-Commerce Warehouse &amp; Storage Management System &nbsp;|&nbsp;
+  Java Academic Project &nbsp;|&nbsp;
+  <strong>https://smartwarehouse-java.netlify.app</strong>
+</footer>
+
+</body>
+</html>
