@@ -1,0 +1,15 @@
+﻿C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\exceptions\InsufficientStockException.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\exceptions\LowStockException.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\exceptions\ProductNotFoundException.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\interfaces\Manageable.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\interfaces\Trackable.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\main\Employee.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\main\EmployeeRole.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\main\Main.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\products\Category.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\products\Product.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\products\ProductManager.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\shipment\Shipment.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\shipment\ShipmentManager.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\warehouse\Rack.java
+C:\Users\gr867\Documents\my doc\JAVA\project\ecommerce\warehouse\StorageManager.java

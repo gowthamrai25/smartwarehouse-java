@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmartWarehouse™ — E-Commerce Storage Management System</title>
+<meta name="description" content="Industrial Java project: Smart E-Commerce Warehouse & Storage Management System">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ════════════ AUTH SCREEN ════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+
+    <!-- Logo -->
+    <div class="login-logo">
+      <div class="icon">🏭</div>
+      <h1>SmartWarehouse™</h1>
+      <p>E-Commerce Storage Management System</p>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.05em">AUTHORIZED PERSONNEL ONLY</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signin" onclick="switchTab('signin')">Sign In</button>
+      <button class="auth-tab"        id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- ── SIGN IN PANEL ── -->
+    <div id="panel-signin" class="auth-panel active">
+      <div class="form-group">
+        <label>Work Email Address</label>
+        <input id="empEmail" type="email" placeholder="yourname@smartwarehouse.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-pw-wrap">
+          <input id="empPass" type="password" placeholder="Enter your password" autocomplete="current-password">
+          <span class="pw-toggle" onclick="togglePw('empPass',this)">👁</span>
+        </div>
+      </div>
+      <div style="text-align:right;margin:-8px 0 16px">
+        <a class="auth-link" onclick="switchTab('forgot')">Forgot password?</a>
+      </div>
+      <button class="btn btn-primary" onclick="login()">🔐 Sign In</button>
+      <div id="login-error" class="auth-msg error">✘ Invalid email or password. Access denied.</div>
+    </div>
+
+    <!-- ── SIGN UP PANEL ── -->
+    <div id="panel-signup" class="auth-panel">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input id="su-name" type="text" placeholder="e.g. Rahul Verma" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>Work Email Address</label>
+        <input id="su-email" type="email" placeholder="yourname@smartwarehouse.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Role</label>
+        <select id="su-role">
+          <option value="WAREHOUSE_STAFF">Warehouse Staff</option>
+          <option value="DELIVERY_MANAGER">Delivery Manager</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-pw-wrap">
+          <input id="su-pass" type="password" placeholder="Min 6 characters">
+          <span class="pw-toggle" onclick="togglePw('su-pass',this)">👁</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <div class="input-pw-wrap">
+          <input id="su-pass2" type="password" placeholder="Re-enter password">
+          <span class="pw-toggle" onclick="togglePw('su-pass2',this)">👁</span>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="signUp()">✅ Create Account</button>
+      <div id="signup-msg" class="auth-msg"></div>
+    </div>
+
+    <!-- ── FORGOT PASSWORD PANEL ── -->
+    <div id="panel-forgot" class="auth-panel">
+      <div id="forgot-step1">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px">Enter your registered email. We'll verify your account and show reset options.</p>
+        <div class="form-group">
+          <label>Registered Email Address</label>
+          <input id="fp-email" type="email" placeholder="yourname@smartwarehouse.com">
+        </div>
+        <button class="btn btn-primary" onclick="forgotStep1()">🔍 Verify Email</button>
+        <div id="fp-msg1" class="auth-msg"></div>
+      </div>
+      <div id="forgot-step2" style="display:none">
+        <p style="font-size:13px;color:var(--success);margin-bottom:20px">✔ Account found. Set your new password below.</p>
+        <div class="form-group">
+          <label>New Password</label>
+          <div class="input-pw-wrap">
+            <input id="fp-newpass" type="password" placeholder="Min 6 characters">
+            <span class="pw-toggle" onclick="togglePw('fp-newpass',this)">👁</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <input id="fp-newpass2" type="password" placeholder="Re-enter new password">
+        </div>
+        <button class="btn btn-primary" onclick="forgotStep2()">🔒 Reset Password</button>
+        <div id="fp-msg2" class="auth-msg"></div>
+      </div>
+      <div style="margin-top:16px;text-align:center">
+        <a class="auth-link" onclick="switchTab('signin')">← Back to Sign In</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════════════ APP SHELL ════════════ -->
+<div id="app" style="flex-direction:column">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <span class="topbar-logo">🏭 SmartWarehouse™ <span>| E-Commerce Storage System</span></span>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-user">
+      <span id="user-name">—</span>
+      <span class="user-badge" id="user-role">—</span>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-section">Overview</div>
+      <div class="nav-item" data-page="dashboard" onclick="navigate('dashboard')">
+        <span class="icon">📊</span><span>Dashboard</span>
+      </div>
+
+      <div class="sidebar-section">Products</div>
+      <div class="nav-item" data-page="inventory" onclick="navigate('inventory')">
+        <span class="icon">📦</span><span>Inventory</span>
+      </div>
+      <div class="nav-item" data-page="addproduct" onclick="navigate('addproduct')">
+        <span class="icon">➕</span><span>Add Product</span>
+      </div>
+      <div class="nav-item" data-page="removeproduct" onclick="navigate('removeproduct')">
+        <span class="icon">🗑️</span><span>Remove Product</span>
+      </div>
+
+      <div class="sidebar-section">Warehouse</div>
+      <div class="nav-item" data-page="warehouse" onclick="navigate('warehouse')">
+        <span class="icon">🏗️</span><span>Storage View</span>
+      </div>
+      <div class="nav-item" data-page="lowstock" onclick="navigate('lowstock')">
+        <span class="icon">⚠️</span><span>Low Stock Alerts</span>
+      </div>
+
+      <div class="sidebar-section">Shipments</div>
+      <div class="nav-item" data-page="shipreceive" onclick="navigate('shipreceive')">
+        <span class="icon">📥</span><span>Receive Stock</span>
+      </div>
+      <div class="nav-item" data-page="dispatch" onclick="navigate('dispatch')">
+        <span class="icon">📤</span><span>Dispatch</span>
+      </div>
+      <div class="nav-item" data-page="track" onclick="navigate('track')">
+        <span class="icon">🔍</span><span>Track Shipment</span>
+      </div>
+      <div class="nav-item" data-page="shiplog" onclick="navigate('shiplog')">
+        <span class="icon">📋</span><span>Shipment Log</span>
+      </div>
+
+      <div class="sidebar-section">Finance</div>
+      <div class="nav-item" data-page="billing" onclick="navigate('billing')">
+        <span class="icon">💰</span><span>Billing Estimate</span>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- DASHBOARD -->
+      <div id="page-dashboard" class="page">
+        <div class="page-header">
+          <h2>📊 Dashboard</h2>
+          <p>Live warehouse overview — SmartWarehouse™</p>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="stat-icon">📦</div><div><div class="stat-val" id="stat-products">0</div><div class="stat-lbl">Total Products</div></div></div>
+          <div class="stat-card"><div class="stat-icon">🔢</div><div><div class="stat-val" id="stat-units">0</div><div class="stat-lbl">Total Units</div></div></div>
+          <div class="stat-card"><div class="stat-icon">💰</div><div><div class="stat-val" id="stat-value">₹0</div><div class="stat-lbl">Inventory Value</div></div></div>
+          <div class="stat-card"><div class="stat-icon">⚠️</div><div><div class="stat-val" id="stat-lowstock">0</div><div class="stat-lbl">Low Stock Items</div></div></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:16px;font-size:15px">Java Concepts in This System</h3>
+          <div id="concepts-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px"></div>
+        </div>
+      </div>
+
+      <!-- INVENTORY -->
+      <div id="page-inventory" class="page">
+        <div class="page-header"><h2>📦 Inventory</h2><p>ArrayList&lt;Product&gt; — dynamic product inventory</p></div>
+        <div class="card" style="margin-bottom:16px">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+            <div style="flex:1;min-width:200px">
+              <label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px">SEARCH (uses .contains() &amp; .startsWith())</label>
+              <input id="search-kw" type="text" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px" placeholder="Product name or ID..." oninput="searchInventory()">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--muted);font-weight:600;display:block;margin-bottom:6px">CATEGORY</label>
+              <select id="search-cat" onchange="searchInventory()" style="padding:10px 12px"></select>
+            </div>
+            <span id="search-count" style="color:var(--muted);font-size:12px;padding-bottom:10px"></span>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Product ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Location</th><th></th></tr></thead>
+          <tbody id="inv-tbody"></tbody></table>
+        </div>
+      </div>
+
+      <!-- ADD PRODUCT -->
+      <div id="page-addproduct" class="page">
+        <div class="page-header"><h2>➕ Add New Product</h2><p>Smart rack allocation by category (Enum-based)</p></div>
+        <div class="card" style="max-width:600px">
+          <div class="form-grid">
+            <div class="form-group" style="grid-column:1/-1">
+              <label>Product Name</label>
+              <input id="new-name" type="text" placeholder="e.g. Samsung Galaxy S24">
+            </div>
+            <div class="form-group">
+              <label>Category (Enum)</label>
+              <select id="new-cat"></select>
+            </div>
+            <div class="form-group">
+              <label>Price (₹)</label>
+              <input id="new-price" type="number" min="0" placeholder="e.g. 49999">
+            </div>
+            <div class="form-group" style="grid-column:1/-1">
+              <label>Quantity</label>
+              <input id="new-qty" type="number" min="0" placeholder="e.g. 20">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="addProduct()">➕ Add Product</button>
+          </div>
+          <div id="add-output" class="output-panel" style="display:none"></div>
+        </div>
+        <script>document.getElementById('add-output').style.display='block';</script>
+      </div>
+
+      <!-- REMOVE PRODUCT -->
+      <div id="page-removeproduct" class="page">
+        <div class="page-header"><h2>🗑️ Remove Product</h2><p>Throws ProductNotFoundException if ID not found</p></div>
+        <div class="card" style="max-width:500px">
+          <div class="form-group">
+            <label>Product ID</label>
+            <input id="rm-id" type="text" placeholder="e.g. EA-1001">
+          </div>
+          <button class="btn btn-danger" onclick="removeProduct()">🗑️ Remove Product</button>
+          <div id="rm-output" class="output-panel"></div>
+        </div>
+      </div>
+
+      <!-- WAREHOUSE -->
+      <div id="page-warehouse" class="page">
+        <div class="page-header"><h2>🏗️ Warehouse Storage</h2><p>Smart rack allocation — category → rack mapping (Enum)</p></div>
+        <div id="rack-grid" class="rack-grid"></div>
+      </div>
+
+      <!-- LOW STOCK -->
+      <div id="page-lowstock" class="page">
+        <div class="page-header"><h2>⚠️ Low Stock Alerts</h2><p>LowStockException thrown when quantity &lt; 5</p></div>
+        <div id="lowstock-list"></div>
+      </div>
+
+      <!-- RECEIVE SHIPMENT -->
+      <div id="page-shipreceive" class="page">
+        <div class="page-header"><h2>📥 Receive Incoming Stock</h2><p>Adds to Vector&lt;Shipment&gt; log — thread-safe</p></div>
+        <div class="card" style="max-width:500px">
+          <div class="form-group"><label>Product ID</label><input id="ship-pid" type="text" placeholder="e.g. EA-1001"></div>
+          <div class="form-group"><label>Quantity</label><input id="ship-qty" type="number" min="1" placeholder="Units received"></div>
+          <div class="form-group"><label>Supplier Name</label><input id="ship-sup" type="text" placeholder="e.g. Samsung India"></div>
+          <button class="btn btn-success" onclick="receiveShipment()">📥 Receive Shipment</button>
+          <div id="ship-output" class="output-panel"></div>
+        </div>
+      </div>
+
+      <!-- DISPATCH -->
+      <div id="page-dispatch" class="page">
+        <div class="page-header"><h2>📤 Dispatch Management</h2><p>Queue&lt;Shipment&gt; — FIFO dispatch processing</p></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-size:14px;color:var(--accent)">Queue a Dispatch</h3>
+            <div class="form-group"><label>Product ID</label><input id="disp-pid" type="text" placeholder="e.g. EA-1001"></div>
+            <div class="form-group"><label>Quantity</label><input id="disp-qty" type="number" min="1" placeholder="Units to dispatch"></div>
+            <div class="form-group"><label>Destination</label><input id="disp-dest" type="text" placeholder="e.g. Mumbai Customer"></div>
+            <button class="btn btn-primary" onclick="queueDispatch()">📤 Add to Queue</button>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:16px;font-size:14px;color:var(--accent)">Process Queue</h3>
+            <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Queue Size: <strong id="queue-size" style="color:var(--warn)">0</strong> pending</p>
+            <button class="btn btn-warn" onclick="processQueue()">▶ Process Next</button>
+          </div>
+        </div>
+        <div id="disp-output" class="output-panel" style="margin-top:16px"></div>
+      </div>
+
+      <!-- TRACK -->
+      <div id="page-track" class="page">
+        <div class="page-header"><h2>🔍 Track Shipment</h2><p>Implements Trackable interface — trackShipment()</p></div>
+        <div class="card" style="max-width:500px">
+          <div class="form-group"><label>Tracking ID</label><input id="track-id" type="text" placeholder="e.g. IN-2001 or OUT-2002"></div>
+          <button class="btn btn-primary" onclick="trackShipment()">🔍 Track</button>
+        </div>
+        <div id="track-result"></div>
+      </div>
+
+      <!-- SHIPMENT LOG -->
+      <div id="page-shiplog" class="page">
+        <div class="page-header"><h2>📋 Shipment Log</h2><p>Vector&lt;Shipment&gt; — all completed shipments</p></div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Tracking ID</th><th>Type</th><th>Product</th><th>Qty</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="ship-log-tbody"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">No shipments yet</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- BILLING -->
+      <div id="page-billing" class="page">
+        <div class="page-header"><h2>💰 Billing Estimate</h2><p>Base price + 18% GST + storage fee + shipping</p></div>
+        <div class="card" style="max-width:480px">
+          <div class="form-group"><label>Product ID</label><input id="bill-id" type="text" placeholder="e.g. EA-1001"></div>
+          <div class="form-group"><label>Quantity</label><input id="bill-qty" type="number" min="1" placeholder="Number of units"></div>
+          <button class="btn btn-primary" onclick="calcBilling()">💰 Calculate</button>
+          <div id="billing-result" class="billing-result" style="margin-top:16px;display:none"></div>
+        </div>
+        <script>document.getElementById('billing-result').style.display='block';</script>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
