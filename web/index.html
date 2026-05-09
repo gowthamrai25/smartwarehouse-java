@@ -49,11 +49,6 @@
 
     <!-- ── SIGN UP PANEL ── -->
     <div id="panel-signup" class="auth-panel">
-      <!-- First-run banner -->
-      <div id="first-run-banner" style="display:none;background:rgba(0,212,170,.12);border:1px solid rgba(0,212,170,.3);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:#00d4aa">
-        🚀 <strong>Welcome! First-time setup.</strong><br>
-        <span style="color:var(--muted)">No accounts exist yet. Register as <strong style="color:#00d4aa">System Administrator</strong> to get started. You can add more staff after logging in.</span>
-      </div>
       <div class="form-group">
         <label>Full Name</label>
         <input id="su-name" type="text" placeholder="e.g. Rahul Verma" autocomplete="name">
@@ -200,8 +195,19 @@
           <div class="stat-card"><div class="stat-icon">🔢</div><div><div class="stat-val" id="stat-units">0</div><div class="stat-lbl">Total Units</div></div></div>
           <div class="stat-card"><div class="stat-icon">💰</div><div><div class="stat-val" id="stat-value">₹0</div><div class="stat-lbl">Inventory Value</div></div></div>
           <div class="stat-card"><div class="stat-icon">⚠️</div><div><div class="stat-val" id="stat-lowstock">0</div><div class="stat-lbl">Low Stock Items</div></div></div>
-      </div>
+        </div>
 
+        <!-- Quick Actions -->
+        <div class="card" style="margin-top:16px">
+          <h3 style="margin-bottom:14px;font-size:14px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em">Quick Actions</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn btn-primary" onclick="navigate('add-product')" style="flex:1;min-width:160px">➕ Add New Product</button>
+            <button class="btn btn-ghost"   onclick="navigate('inventory')"   style="flex:1;min-width:160px">📦 View Inventory</button>
+            <button class="btn btn-ghost"   onclick="navigate('warehouse')"   style="flex:1;min-width:160px">🏗 Storage View</button>
+            <button class="btn btn-ghost"   onclick="navigate('lowstock')"    style="flex:1;min-width:160px">⚠️ Low Stock Alerts</button>
+          </div>
+        </div>
+      </div>
 
       <!-- INVENTORY -->
       <div id="page-inventory" class="page">
