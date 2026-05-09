@@ -528,26 +528,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (id === 'search-cat') el.innerHTML = '<option value="">All Categories</option>';
     cats.forEach(c => { const o = document.createElement('option'); o.value=c; o.textContent=c; el.appendChild(o); });
   });
-  // render Java concepts grid
-  const concepts = [
-    ['ArrayList',         'ProductManager — dynamic inventory'],
-    ['Vector',           'ShipmentManager — shipment log'],
-    ['Queue',            'Dispatch queue (FIFO)'],
-    ['Generics',         'ArrayList, Vector, Queue — all typed'],
-    ['Custom Exceptions','LowStockException, ProductNotFoundException'],
-    ['Interfaces',       'Trackable, Manageable'],
-    ['Enums',            'Category, EmployeeRole, ShipmentType'],
-    ['Packages',         '6 modular packages'],
-    ['String Methods',   '.contains() .startsWith() in search'],
-    ['Arrays',           'Rack shelf slots (fixed size)']
-  ];
-  const grid = document.getElementById('concepts-grid');
-  if (grid) {
-    grid.innerHTML = concepts.map(([k,v]) =>
-      `<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px">
-        <div style="color:var(--accent);font-size:12px;font-weight:700">${k}</div>
-        <div style="color:var(--muted);font-size:11px;margin-top:4px">${v}</div>
-      </div>`).join('');
-  }
 });
 
